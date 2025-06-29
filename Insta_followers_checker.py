@@ -24,7 +24,7 @@ def upload_files(a,b):
     print(len(follower_id), len(following_id))
 
 
-    st.write(f"People who doesn't follow you back are:")
+    st.markdown(f"**People who doesn't follow you back are:**")
     for i in following_id:
         if i not in follower_id:
             st.write(f"{i}")
