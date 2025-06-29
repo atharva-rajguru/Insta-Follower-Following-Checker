@@ -23,9 +23,11 @@ def upload_files(a,b):
 
     print(len(follower_id), len(following_id))
 
+
+    st.write(f"People who doesn't follow you back are:")
     for i in following_id:
         if i not in follower_id:
-            st.write(f"Follower {i} is not in the following list.")
+            st.write(f"{i}")
     else:
         print("All followers are in following list")
 
@@ -33,7 +35,7 @@ def upload_files(a,b):
 # Streamlit app setup
 st.title("Welcome to the Instagram Follower Checker")
 st.subheader("This app checks if all followers are in the following list.")
-st.text("Please upload the JSON files you downloaded from Instagram.")
+st.text("Please upload the JSON files ('followers_1 & following') which you have downloaded from Instagram.")
 
 followers_file =''
 following_file = ''
@@ -64,7 +66,7 @@ with st.expander("Please follow these steps, to use this app:"):
         st.write("5. Click on 'Download your information'.")
         st.write("6. Go to 'Download or transfer information' and select your instagram account.")
         st.write("7. Go to 'Some of your information'.")
-        st.write("8. Selects 'Followers and following' under 'Connections' and hit 'Next'.")
+        st.write("8. Select 'Followers and following' under 'Connections' and hit 'Next'.")
         st.write("9. Then Click on 'Download to this Device'.")
         st.write("10. Format should be JSON and Date range should be 'All time'.")
         st.write("11. Click on 'Create File'.")
