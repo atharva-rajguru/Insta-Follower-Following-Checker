@@ -21,22 +21,34 @@ def upload_files(a,b):
         data = m.get('string_list_data', [])
         for z in data:
             following_id.append(z.get('value', ''))
-
-    print(len(follower_id), len(following_id))
-
-
-    st.markdown(f"**People who doesn't follow you back are:**")
+    people = []
     for i in following_id:
         if i not in follower_id:
-            st.write(f"{i}")
+            people.append(i)
+    
+    
+
+    
+    if len(people) == 0:
+        st.markdown("**All the people you follow are following you back!**")
     else:
-        print("All followers are in following list")
+        st.markdown(f"**There are total {len(people)} accounts which doesn't follow you back.**")
+        st.markdown(f"**Accounts are:**")
+        for k in people:
+            st.text(f"- {k}")
+    
+    
 
 
 # Streamlit app setup
-st.title("Welcome to the Instagram Follower Checker")
-st.subheader("This app checks if all followers are in the following list.")
-st.text("Please upload the JSON files ('followers_1 & following') which you have \ndownloaded from Instagram.")
+col1,col2 = st.columns([1,8])
+with col1:
+    st.image('Instagram-Logo.png', width=70)
+with col2:
+    st.title("Insta Followback Checker")
+st.header("Welcome.... 🚀") 
+st.subheader("This app checks who doesn't follow you back!!!!")
+st.text("Please upload the Zipped file or JSON files ('followers_1 & following') which you \nhave downloaded from Instagram.")
 
 followers_file =''
 following_file = ''
@@ -72,7 +84,8 @@ if folder or (followers_file and following_file):
                     following_file = z.open(following_path)
 
                 else:
-                    st.warning("Required files not found in the ZIP. Please check the paths.")
+                    st.warning("Required files not found in the ZIP. Please select correct zip file.")
+                    exit()
             upload_files(followers_file, following_file)
         
         else:
@@ -98,5 +111,5 @@ with st.expander("Please follow these steps, to use this app:"):
         st.write("9. Then Click on 'Download to this Device'.")
         st.write("10. Format should be JSON and Date range should be 'All time'.")
         st.write("11. Click on 'Create File'.")
-    st.markdown("**Note: This data will be sent to you over mail. Download it and upload json files by name 'followers_1' & 'following'.**")
+    st.markdown("**Note: This data will be sent to you over mail. Download it and upload zipped file or files by name 'followers_1' & 'following' after extracting the file.**")
 
