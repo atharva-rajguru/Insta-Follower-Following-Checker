@@ -1,5 +1,6 @@
 import json
 import streamlit as st
+import zipfile
 
 # Main checker
 def upload_files(a,b):
@@ -35,28 +36,52 @@ def upload_files(a,b):
 # Streamlit app setup
 st.title("Welcome to the Instagram Follower Checker")
 st.subheader("This app checks if all followers are in the following list.")
-st.text("Please upload the JSON files ('followers_1 & following') which you have downloaded from Instagram.")
+st.text("Please upload the JSON files ('followers_1 & following') which you have \ndownloaded from Instagram.")
 
 followers_file =''
 following_file = ''
-uploaded_files = st.file_uploader("Choose files", accept_multiple_files=True)
-
-for file in uploaded_files:
-    if file.name == "connections":
-        folder = file
-    elif file.name == "followers_1.json":
+folders = st.file_uploader("Choose files", accept_multiple_files=True, type=["json", "zip"])
+folder = None
+for file in folders:
+    if file.name == "followers_1.json":
         followers_file = file
     elif file.name == "following.json":
         following_file = file
+    elif file.name.endswith(".zip"):
+        folder = file
     else:
-        st.warning("Please upload 'Connections' folder or files named 'followers_1.json' and 'following.json'.")
+        st.warning("Please upload 'Zip' file folder or files named 'followers_1.json' and 'following.json' after unzipping the zipped file.")
+
+
 # Check if both files are uploaded
-if followers_file and following_file:
+if folder or (followers_file and following_file):
     if st.button("Check"):
         if followers_file and following_file:
             upload_files(followers_file, following_file)
+        elif folder:
+            with zipfile.ZipFile(folder, 'r') as z:
+                
+                followers_path = "connections/followers_and_following/followers_1.json"
+                following_path = "connections/followers_and_following/following.json"
+
+                # Check if the files exist
+                if followers_path in z.namelist():
+                    followers_file = z.open(followers_path)
+
+                if following_path in z.namelist():
+                    following_file = z.open(following_path)
+
+                else:
+                    st.warning("Required files not found in the ZIP. Please check the paths.")
+            upload_files(followers_file, following_file)
+        
         else:
             st.warning("Please upload both files before checking!")
+
+
+
+
+
 # Instructions for the user
 with st.expander("Please follow these steps, to use this app:"):
 
