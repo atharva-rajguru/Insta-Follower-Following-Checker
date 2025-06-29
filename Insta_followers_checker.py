@@ -39,14 +39,17 @@ st.text("Please upload the JSON files ('followers_1 & following') which you have
 
 followers_file =''
 following_file = ''
-uploaded_files = st.file_uploader("Choose files", accept_multiple_files=True, type=["json"])
+uploaded_files = st.file_uploader("Choose files", accept_multiple_files=True)
+
 for file in uploaded_files:
-    if file.name == "followers_1.json":
+    if file.name == "connections":
+        folder = file
+    elif file.name == "followers_1.json":
         followers_file = file
     elif file.name == "following.json":
         following_file = file
     else:
-        st.warning("Please upload files named 'followers_1.json' and 'following.json'.")
+        st.warning("Please upload 'Connections' folder or files named 'followers_1.json' and 'following.json'.")
 # Check if both files are uploaded
 if followers_file and following_file:
     if st.button("Check"):
